@@ -1,0 +1,25 @@
+# Hypergraph
+K_neigs: [1]
+K_neigs_sp: [3]
+m_prob: 1.0
+is_probH: True
+
+# Train
+max_epoch: 300
+n_hid: 32
+batch: 64
+lr: 0.003
+drop_out: 0.4
+print_freq: 50
+test_time: 1
+
+# Dataset
+ConType: ["NO"]
+data_path: "E:\\asset_DTU"
+subject_number: 18
+trail_number: 60
+fs: 128
+length: 1
+label_col: 0
+eeg_channel: 64
+overlap: 0.5

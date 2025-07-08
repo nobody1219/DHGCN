@@ -110,7 +110,7 @@ def train_model(train_loader, valid_loader, model, criterion, optimizer, schedul
                 loss.backward()
                 optimizer.step()
 
-                running_loss += loss.detach() * batch_size
+                running_loss += loss * batch_size
                 running_corrects += predicted.eq(train_label).cpu().sum()
 
         epoch_loss_train = running_loss / len(train_loader.dataset)

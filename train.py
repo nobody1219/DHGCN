@@ -94,15 +94,15 @@ def train_model(train_loader, valid_loader, model, criterion, optimizer, schedul
         running_loss = 0.0
         running_corrects = 0
         for i_batch, batch_data in enumerate(train_loader):
-            seq_data, G_all, G_sp, train_label = batch_data
+            data, G, G_sp, train_label = batch_data
             train_label = train_label.squeeze(-1)
-            seq_data, G_all, G_sp, train_label = seq_data.to(device), G_all.to(device), G_sp.to(device), train_label.to(
+            data, G, G_sp, train_label = data.to(device), G.to(device), G_sp.to(device), train_label.to(
                 device)
             batch_size = train_label.size(0)
 
             optimizer.zero_grad()
             with torch.set_grad_enabled(True):
-                outputs = model(seq_data, G_all, G_sp)
+                outputs = model(data, G, G_sp)
                 outputs = outputs.to(device)
                 loss = criterion(outputs, train_label)
                 predicted = outputs.data.max(1)[1]
@@ -125,14 +125,14 @@ def train_model(train_loader, valid_loader, model, criterion, optimizer, schedul
         running_loss = 0.0
         running_corrects = 0
         for i_batch, batch_data in enumerate(valid_loader):
-            seq_data, G_all, G_sp, valid_label = batch_data
+            data, G, G_sp, valid_label = batch_data
             valid_label = valid_label.squeeze(-1)
-            seq_data, G_all, G_sp, valid_label = seq_data.to(device), G_all.to(device), G_sp.to(device), valid_label.to(
+            data, G, G_sp, valid_label = data.to(device), G.to(device), G_sp.to(device), valid_label.to(
                 device)
             batch_size = valid_label.size(0)
 
             with torch.no_grad():
-                outputs = model(seq_data, G_all, G_sp)
+                outputs = model(data, G, G_sp)
                 outputs = outputs.to(device)
                 loss = criterion(outputs, valid_label)
                 predicted = outputs.data.max(1)[1]
@@ -186,11 +186,11 @@ def test(model, best_model_wts, test_loader, test_time=1, subject_index=None, mo
     num_batches = 0
 
     for i_batch, batch_data in enumerate(test_loader):
-        seq_data, G_all, G_sp, test_label = batch_data
-        G_all = G_all.to(device)
+        data, G, G_sp, test_label = batch_data
+        G = G.to(device)
         G_sp = G_sp.to(device)
         test_label = test_label.squeeze(-1)
-        seq_data, test_label = seq_data.to(device), test_label.to(device)
+        data, test_label = data.to(device), test_label.to(device)
         batch_size = test_label.size(0)
         total_samples += batch_size
 
@@ -198,7 +198,7 @@ def test(model, best_model_wts, test_loader, test_time=1, subject_index=None, mo
         outputs = torch.zeros(batch_size, 2).to(device)
         for _ in range(test_time):
             with torch.no_grad():
-                output = model(seq_data, G_all, G_sp)
+                output = model(data, G, G_sp)
                 outputs += output
 
         num_batches += 1

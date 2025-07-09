@@ -58,10 +58,10 @@ def set_seed(seed):
 
 
 class EEGDataset(Dataset):
-    def __init__(self, data, labels, G_list, G_sp):
+    def __init__(self, data, labels, G, G_sp):
         self.data = data
         self.labels = labels
-        self.G_list = G_list
+        self.G = G
         self.G_sp = G_sp
 
     def __len__(self):
@@ -70,7 +70,7 @@ class EEGDataset(Dataset):
     def __getitem__(self, idx):
         sample = self.data[idx]
         label = self.labels[idx]
-        G = self.G_list[idx]
+        G = self.G[idx]
         sp = self.G_sp[idx]
         return sample, G, sp, label
 

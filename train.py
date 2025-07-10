@@ -183,7 +183,6 @@ def test(model, best_model_wts, test_loader, test_time=1):
 
     total_corrects = 0.0
     total_samples = 0
-    num_batches = 0
 
     for i_batch, batch_data in enumerate(test_loader):
         data, G, G_sp, test_label = batch_data
@@ -201,7 +200,6 @@ def test(model, best_model_wts, test_loader, test_time=1):
                 output = model(data, G, G_sp)
                 outputs += output
 
-        num_batches += 1
         outputs /= test_time
         predicted = outputs.data.max(1)[1]
         total_corrects += predicted.eq(test_label).cpu().sum()

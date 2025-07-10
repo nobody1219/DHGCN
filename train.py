@@ -75,7 +75,7 @@ class EEGDataset(Dataset):
         return sample, G, sp, label
 
 
-def train_model(train_loader, valid_loader, model, criterion, optimizer, scheduler, num_epochs, print_freq, batch,
+def train_model(train_loader, valid_loader, model, criterion, optimizer, scheduler, num_epochs, print_freq,
                 patience=50):
     since = time.time()
     state_dict_updates = 0
@@ -175,7 +175,7 @@ def train_model(train_loader, valid_loader, model, criterion, optimizer, schedul
     return (model_wts_best_val_acc, acc_epo), (model_wts_lowest_val_loss, loss_epo)
 
 
-def test(model, best_model_wts, test_loader, test_time=1, subject_index=None, mode='loss'):
+def test(model, best_model_wts, test_loader, test_time=1):
     best_model_wts, epo = best_model_wts
     model = model.to(device)
     model.load_state_dict(best_model_wts)
@@ -245,15 +245,13 @@ def train_test_model_for_subject(cfg, subject_idx):
 
     model_wts_best_val_acc, model_wts_lowest_val_loss = train_model(
         train_loader, valid_loader, model_ft, criterion, optimizer,
-        scheduler, cfg['max_epoch'], print_freq=cfg['print_freq'], batch=cfg['batch'])
+        scheduler, cfg['max_epoch'], print_freq=cfg['print_freq'])
 
     # Testing with the lowest validation loss
     print('**** Model of lowest val loss ****')
-    test_acc_lvl, epo_lvl = test(model_ft, model_wts_lowest_val_loss, test_loader, cfg['test_time'],
-                                 subject_index=subject_idx + 1, mode='loss')
+    test_acc_lvl, epo_lvl = test(model_ft, model_wts_lowest_val_loss, test_loader, cfg['test_time'])
     print('**** Model of best val acc ****')
-    test_acc_bva, epo_bva = test(model_ft, model_wts_best_val_acc, test_loader, cfg['test_time'],
-                                 subject_index=subject_idx + 1, mode='acc')
+    test_acc_bva, epo_bva = test(model_ft, model_wts_best_val_acc, test_loader, cfg['test_time'])
 
     return {
         'model_index': subject_idx + 1,

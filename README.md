@@ -5,7 +5,7 @@ We propose DHGCN, a Dual HyperGraph Convolutional Network with low parameters. I
 
 Jian Zhou, Yingjie Xie, Cunhang Fan, Huabin Wang, Zhao Lv, Liang Tao. DHGCN: Dual HyperGraph Convolutional Network for EEG-Based Auditory Attention Detection. In ACM MM 2025.
 
-![image](https://github.com/nobody1219/DHGCN/blob/main/Overreview.png)
+![image](https://github.com/nobody1219/DHGCN/main/Overreview.png)
 
 # Preprocess
 - Please download the AAD dataset for training.
